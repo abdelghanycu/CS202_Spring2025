@@ -1,4 +1,4 @@
-package cu.sci.cs202.week08.section1;
+package cu.sci.cs202.week08;
 
 public class LinkedBinaryTree {
 
@@ -72,23 +72,31 @@ public class LinkedBinaryTree {
         parent = current;
         current = current.getRight();
       } else {
-        if (current == root) {
-          root = null;
-          break;
-        }
         if (current.getLeft() == null && current.getRight() == null) {
+          if (current == root) {
+            root = null;
+            break;
+          }
           if (parent.getLeft() == current) {
             parent.setLeft(null);
           } else {
             parent.setRight(null);
           }
         } else if (current.getLeft() != null && current.getRight() == null) {
+          if (current == root) {
+            root = current.getLeft();
+            break;
+          }
           if (parent.getLeft() == current) {
             parent.setLeft(current.getLeft());
           } else {
             parent.setRight(current.getLeft());
           }
         } else if (current.getLeft() == null && current.getRight() != null) {
+          if (current == root) {
+            root = current.getRight();
+            break;
+          }
           if (parent.getLeft() == current) {
             parent.setLeft(current.getRight());
           } else {
@@ -98,8 +106,11 @@ public class LinkedBinaryTree {
           Node maxNode = getMax(current.getLeft());
           maxNode.setRight(current.getRight());
 
-          parent.setLeft(current.getLeft());
-
+          if (current == root) {
+            root = current.getLeft();
+          } else {
+            parent.setLeft(current.getLeft());
+          }
         }
         break;
       }
@@ -130,10 +141,10 @@ public class LinkedBinaryTree {
 
   public void traversals() {
     if (root != null) {
-      System.out.println("inOrder");
-      inOrder(root);
       System.out.println("preOrder");
       preOrder(root);
+      System.out.println("inOrder");
+      inOrder(root);
       System.out.println("postOrder");
       postOrder(root);
     }
@@ -144,7 +155,7 @@ public class LinkedBinaryTree {
     if (node.getLeft() != null) {
       preOrder(node.getLeft());
     }
-    if(node.getRight() != null) {
+    if (node.getRight() != null) {
       preOrder(node.getRight());
     }
   }
@@ -154,7 +165,7 @@ public class LinkedBinaryTree {
       inOrder(node.getLeft());
     }
     System.out.println(node.getValue());
-    if(node.getRight() != null) {
+    if (node.getRight() != null) {
       inOrder(node.getRight());
     }
 
@@ -164,7 +175,7 @@ public class LinkedBinaryTree {
     if (node.getLeft() != null) {
       postOrder(node.getLeft());
     }
-    if(node.getRight() != null) {
+    if (node.getRight() != null) {
       postOrder(node.getRight());
     }
     System.out.println(node.getValue());

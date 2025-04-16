@@ -1,4 +1,4 @@
-package cu.sci.cs202.week08.section1;
+package cu.sci.cs202.week08;
 
 public class TestLinkedBinaryTree {
 
