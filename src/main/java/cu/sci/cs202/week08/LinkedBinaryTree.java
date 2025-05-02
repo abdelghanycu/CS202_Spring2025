@@ -125,6 +125,47 @@ public class LinkedBinaryTree {
     return node;
   }
 
+  // C-8.36
+  public void pruneSubtree(int value) {
+    if (!search(value)) {
+      return;
+    }
+    Node parent = root;
+    Node current = root;
+    while (current != null) {
+      if (current.getValue() > value) {
+        parent = current;
+        current = current.getLeft();
+      } else if (current.getValue() < value) {
+        parent = current;
+        current = current.getRight();
+      } else {
+        if (current == root) {
+          root = null;
+          sz = 0;
+          return;
+        }
+
+        if (parent.getLeft() == current) {
+          parent.setLeft(null);
+          sz -= countSubTree(current);
+        } else {
+          parent.setRight(null);
+          sz -= countSubTree(current);
+        }
+        return;
+      }
+    }
+  }
+
+  private int countSubTree(Node cur) {
+    if (cur == null) {
+      return 0;
+    }
+    return countSubTree(cur.getLeft()) + countSubTree(cur.getRight()) + 1;
+  }
+
+  // C-8.28
   public int getHeight() {
     return getHeight(root);
   }
@@ -139,6 +180,7 @@ public class LinkedBinaryTree {
     return height;
   }
 
+  // R-8.18 R-8.19 C-8.45
   public void traversals() {
     if (root != null) {
       System.out.println("preOrder");
@@ -179,5 +221,29 @@ public class LinkedBinaryTree {
       postOrder(node.getRight());
     }
     System.out.println(node.getValue());
+  }
+
+  // R-8.5
+  public int countLeftLeaf() {
+    return countLeftLeaf(root, false);
+  }
+
+  private int countLeftLeaf(Node cur, boolean isLeft) {
+    if (cur.getLeft() == null && cur.getRight() == null) {
+      if (isLeft) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    int cnt = 0;
+    if (cur.getLeft() != null) {
+      cnt += countLeftLeaf(cur.getLeft(), true);
+    }
+
+    if (cur.getRight() != null) {
+      cnt += countLeftLeaf(cur.getRight(), false);
+    }
+    return cnt;
   }
 }
